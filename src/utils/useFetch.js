@@ -2,17 +2,18 @@ import { useState, useEffect } from 'react';
 
 export const useFetch = (url) => {
   const [loading, setLoading] = useState(true);
-  const [pokemon, setPokemon] = useState([]);
+  const [data, setData] = useState([]);
 
   const getPokemon = async () => {
     const response = await fetch(url);
-    const pokemon = await response.json();
-    setPokemon(pokemon);
+    const data = await response.json();
+    setData(data.pokemon);
     setLoading(false);
   };
 
   useEffect(() => {
     getPokemon();
   }, [url]);
-  return { loading, pokemon };
+
+  return { data, loading };
 };
