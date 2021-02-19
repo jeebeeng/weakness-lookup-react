@@ -1,18 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { data } from './data';
+import { useFetch } from './utils/useFetch';
 import './index.css';
 
 function App() {
+  const url = 'http://localhost:3001/pokemon';
   const [name, setName] = useState('');
-  const [list, setList] = useState(data);
+  const [list, setList] = useState([]);
+  const { data, isLoading } = useFetch(url);
+
   useEffect(() => {
+    setList(data);
+  }, [data]);
+
+  useEffect(() => {
+    console.log(data);
     if (name.trim() === '') {
       setList(data);
     } else {
-      setList((list) => {
-        return data.filter((item) =>
-          item.name.toLowerCase().includes(name.toLowerCase().trim())
-        );
+      setList(() => {
+        return data.filter((item) => {
+          return item.name.toLowerCase().includes(name.toLowerCase().trim());
+        });
       });
     }
   }, [name]);
@@ -22,29 +30,27 @@ function App() {
       <header>
         <h1>Pokemon Weakness Lookup</h1>
       </header>
-      <form className="form" onSubmit={(e) => e.preventDefault()}>
-        <div>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-      </form>
-      <PokemonList data={list} />
+      <div>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+      </div>
+      {isLoading ? <h1>Loading...</h1> : <PokemonList data={list} />}
     </div>
   );
 }
 
-const PokemonList = ({ data }) => {
+const PokemonList = React.memo(({ data }) => {
   return (
     <ul className="card-list">
       {data.map((item) => {
-        return <InfoCard key={item.id} data={item} />;
+        return <InfoCard key={item.name} data={item} />;
       })}
     </ul>
   );
-};
+});
 
 const InfoCard = ({ data }) => {
   const { name, weaknesses, resistances, immunities } = data;
