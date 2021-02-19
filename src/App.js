@@ -40,41 +40,33 @@ const PokemonList = ({ data }) => {
   return (
     <ul className="card-list">
       {data.map((item) => {
-        return <Card key={item.id} data={item} />;
+        return <InfoCard key={item.id} data={item} />;
       })}
     </ul>
   );
 };
 
-const Card = ({ data }) => {
+const InfoCard = ({ data }) => {
   const { name, weaknesses, resistances, immunities } = data;
   return (
     <article className="info-card">
       <h2>{name}</h2>
-      <article>
-        <h3>Weaknesses</h3>
-        <ul className="type-list">
-          {weaknesses.map((type, index) => {
-            return <li key={index}>{type}</li>;
-          })}
-        </ul>
-      </article>
-      <article>
-        <h3>Resistances</h3>
-        <ul className="type-list">
-          {resistances.map((type, index) => {
-            return <li key={index}>{type}</li>;
-          })}
-        </ul>
-      </article>
-      <article>
-        <h3>Immunities</h3>
-        <ul className="type-list">
-          {immunities.map((type, index) => {
-            return <li key={index}>{type}</li>;
-          })}
-        </ul>
-      </article>
+      <TypeCard title="Weaknesses" weaknesses={weaknesses} />
+      <TypeCard title="Resistances" weaknesses={resistances} />
+      <TypeCard title="Immunities" weaknesses={immunities} />
+    </article>
+  );
+};
+
+const TypeCard = ({ title, weaknesses }) => {
+  return (
+    <article>
+      <h3>{title}</h3>
+      <ul className="type-list">
+        {weaknesses.map((type, index) => {
+          return <li key={index}>{type}</li>;
+        })}
+      </ul>
     </article>
   );
 };
