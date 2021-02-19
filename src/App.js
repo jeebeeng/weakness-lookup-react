@@ -5,11 +5,15 @@ import './index.css';
 function App() {
   const [name, setName] = useState('');
   const [list, setList] = useState(data);
-
   useEffect(() => {
-    if (name === '') {
+    if (name.trim() === '') {
       setList(data);
     } else {
+      setList((list) => {
+        return data.filter((item) =>
+          item.name.toLowerCase().includes(name.toLowerCase().trim())
+        );
+      });
     }
   }, [name]);
 
@@ -18,7 +22,7 @@ function App() {
       <header>
         <h1>Pokemon Weakness Lookup</h1>
       </header>
-      <form className="form">
+      <form className="form" onSubmit={(e) => e.preventDefault()}>
         <div>
           <input
             type="text"
@@ -27,23 +31,25 @@ function App() {
           />
         </div>
       </form>
-      <ul className="card-list">
-        {list.map((item) => {
-          return (
-            <li>
-              <Card data={item} />
-            </li>
-          );
-        })}
-      </ul>
+      <PokemonList data={list} />
     </div>
   );
 }
 
-const Card = ({ data }) => {
-  const { name, id, weaknesses, resistances, immunities } = data;
+const PokemonList = ({ data }) => {
   return (
-    <article className="info-card" key={id}>
+    <ul className="card-list">
+      {data.map((item) => {
+        return <Card key={item.id} data={item} />;
+      })}
+    </ul>
+  );
+};
+
+const Card = ({ data }) => {
+  const { name, weaknesses, resistances, immunities } = data;
+  return (
+    <article className="info-card">
       <h2>{name}</h2>
       <article>
         <h3>Weaknesses</h3>
