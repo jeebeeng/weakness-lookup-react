@@ -1,0 +1,17 @@
+.card-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+    justify-content: flex-start;
+}
+
+.type-list {
+    list-style-type: none;
+}
+
+.info-card {
+    width: fit-content;
+    margin: 2em;
+    background-color: bisque;
+}
