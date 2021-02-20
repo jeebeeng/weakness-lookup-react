@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFetch } from './utils/useFetch';
+import { FixedSizeList as List } from 'react-window';
+import AutoSizer from 'react-virtualized-auto-sizer';
+
 import './index.css';
 
 function App() {
@@ -13,7 +16,6 @@ function App() {
   }, [data]);
 
   useEffect(() => {
-    console.log(data);
     if (name.trim() === '') {
       setList(data);
     } else {
@@ -23,10 +25,10 @@ function App() {
         });
       });
     }
-  }, [name]);
+  }, [name, data]);
 
   return (
-    <div>
+    <>
       <header>
         <h1>Pokemon Weakness Lookup</h1>
       </header>
@@ -38,29 +40,43 @@ function App() {
         />
       </div>
       {isLoading ? <h1>Loading...</h1> : <PokemonList data={list} />}
-    </div>
+    </>
   );
 }
 
 const PokemonList = React.memo(({ data }) => {
   return (
-    <ul className="card-list">
-      {data.map((item) => {
-        return <InfoCard key={item.name} data={item} />;
-      })}
-    </ul>
+    <div className="info-list">
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            className="List"
+            itemCount={data.length}
+            itemSize={300}
+            height={height}
+            width={width}
+            itemData={data}
+          >
+            {InfoCard}
+          </List>
+        )}
+      </AutoSizer>
+    </div>
   );
 });
 
-const InfoCard = ({ data }) => {
-  const { name, weaknesses, resistances, immunities } = data;
+const InfoCard = ({ index, style, data }) => {
+  const { name, weaknesses, resistances, immunities } = data[index];
+
   return (
-    <article className="info-card">
-      <h2>{name}</h2>
-      <TypeCard title="Weaknesses" weaknesses={weaknesses} />
-      <TypeCard title="Resistances" weaknesses={resistances} />
-      <TypeCard title="Immunities" weaknesses={immunities} />
-    </article>
+    <div style={style}>
+      <article className="info-card">
+        <h2>{name}</h2>
+        <TypeCard title="Weaknesses" weaknesses={weaknesses} />
+        <TypeCard title="Resistances" weaknesses={resistances} />
+        <TypeCard title="Immunities" weaknesses={immunities} />
+      </article>
+    </div>
   );
 };
 
