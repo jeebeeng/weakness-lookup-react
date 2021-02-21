@@ -29,11 +29,10 @@ function App() {
 
   return (
     <>
-      <header>
-        <h1>Pokemon Weakness Lookup</h1>
-      </header>
-      <div>
+      <div className="top-content">
+        <h1 className="main-title">Pokemon Weakness Lookup</h1>
         <input
+          className="main-input"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -46,49 +45,61 @@ function App() {
 
 const PokemonList = React.memo(({ data }) => {
   return (
-    <div className="info-list">
-      <AutoSizer>
-        {({ height, width }) => (
-          <List
-            className="List"
-            itemCount={data.length}
-            itemSize={300}
-            height={height}
-            width={width}
-            itemData={data}
-          >
-            {InfoCard}
-          </List>
-        )}
-      </AutoSizer>
-    </div>
+    <AutoSizer>
+      {({ height, width }) => (
+        <List
+          className="List"
+          itemCount={data.length}
+          itemSize={500}
+          height={height}
+          width={width}
+          itemData={data}
+        >
+          {InfoCard}
+        </List>
+      )}
+    </AutoSizer>
   );
 });
 
 const InfoCard = ({ index, style, data }) => {
-  const { name, weaknesses, resistances, immunities } = data[index];
+  const { name, type, weaknesses, resistances, immunities } = data[index];
 
   return (
-    <div style={style}>
+    <div
+      style={{
+        ...style,
+        height: 400,
+        display: 'flex',
+        justifyContent: 'center',
+      }}
+    >
       <article className="info-card">
-        <h2>{name}</h2>
-        <TypeCard title="Weaknesses" weaknesses={weaknesses} />
-        <TypeCard title="Resistances" weaknesses={resistances} />
-        <TypeCard title="Immunities" weaknesses={immunities} />
+        <h2 className="pokemon-name">{name}</h2>
+        <TypeCard title="" types={type} />
+        <TypeCard title="Weaknesses" types={weaknesses} />
+        <TypeCard title="Resistances" types={resistances} />
+        <TypeCard title="Immunities" types={immunities} />
       </article>
     </div>
   );
 };
 
-const TypeCard = ({ title, weaknesses }) => {
+const TypeCard = ({ title, types }) => {
   return (
-    <article>
-      <h3>{title}</h3>
-      <ul className="type-list">
-        {weaknesses.map((type, index) => {
-          return <li key={index}>{type}</li>;
-        })}
-      </ul>
+    <article className="type-card">
+      {title && <h3 className="type-card-title">{title}</h3>}
+      <div className="type-container">
+        <ul className="type-list">
+          {types.map((type, index) => {
+            return (
+              <li key={index} className="type">
+                {type}
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </article>
   );
 };
