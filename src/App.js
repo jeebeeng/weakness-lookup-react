@@ -49,7 +49,7 @@ const PokemonList = React.memo(({ data }) => {
         <List
           className="List"
           itemCount={data.length}
-          itemSize={600}
+          itemSize={580}
           height={height}
           width={width}
           itemData={data}
@@ -62,7 +62,7 @@ const PokemonList = React.memo(({ data }) => {
 });
 
 const InfoCard = ({ index, style, data }) => {
-  const { name, type, weaknesses, resistances, immunities } = data[index];
+  const { id, name, type, weaknesses, resistances, immunities } = data[index];
 
   return (
     <div
@@ -74,7 +74,12 @@ const InfoCard = ({ index, style, data }) => {
       }}
     >
       <article className="info-card">
-        <h1 className="pokemon-name">{name}</h1>
+        <h1 className="pokemon-name">
+          {name}
+          <span className="pokemon-id">
+            {'#' + '0'.repeat(3 - String(id).length) + id}
+          </span>
+        </h1>
         <TypeCard title="" types={type} />
         <TypeCard title="Weaknesses" types={weaknesses} />
         <TypeCard title="Resistances" types={resistances} />
@@ -93,13 +98,21 @@ const TypeCard = ({ title, types }) => {
           {types.map((type, index) => {
             return (
               <li key={index} className="type">
-                {type}
+                <TypePill type={type} />
               </li>
             );
           })}
         </ul>
       </div>
     </article>
+  );
+};
+
+const TypePill = ({ type }) => {
+  return (
+    <div className={`type-pill ${type}`}>
+      <p>{type[0].toUpperCase() + type.substring(1)}</p>
+    </div>
   );
 };
 
