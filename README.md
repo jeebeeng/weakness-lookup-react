@@ -1,7 +1,7 @@
 # PokeWeak
 
 Search a Pokemon's name to see its type, weaknesses, resistances, and immunities.\
-Website built with React.\
+Website built with React.
 
 ### `yarn start`
 
