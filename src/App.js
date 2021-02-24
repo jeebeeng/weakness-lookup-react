@@ -6,10 +6,9 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import './index.css';
 
 function App() {
-  const url = 'http://localhost:3001/pokemon';
   const [name, setName] = useState('');
   const [list, setList] = useState([]);
-  const { data, isLoading } = useFetch(url);
+  const { data, isLoading } = useFetch();
 
   useEffect(() => {
     setList(data);
@@ -30,7 +29,7 @@ function App() {
   return (
     <>
       <div className="top-content">
-        <h1 className="main-title">Pokemon Weakness Lookup</h1>
+        <h1 className="main-title">PokeWeak</h1>
         <input
           className="main-input"
           type="text"
@@ -50,7 +49,7 @@ const PokemonList = React.memo(({ data }) => {
         <List
           className="List"
           itemCount={data.length}
-          itemSize={500}
+          itemSize={600}
           height={height}
           width={width}
           itemData={data}
@@ -69,13 +68,13 @@ const InfoCard = ({ index, style, data }) => {
     <div
       style={{
         ...style,
-        height: 400,
+        height: 'wrapContent',
         display: 'flex',
         justifyContent: 'center',
       }}
     >
       <article className="info-card">
-        <h2 className="pokemon-name">{name}</h2>
+        <h1 className="pokemon-name">{name}</h1>
         <TypeCard title="" types={type} />
         <TypeCard title="Weaknesses" types={weaknesses} />
         <TypeCard title="Resistances" types={resistances} />
