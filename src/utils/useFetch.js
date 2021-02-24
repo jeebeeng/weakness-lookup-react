@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export const useFetch = (url) => {
+export const useFetch = () => {
+  const url = 'http://localhost:3001/pokemon';
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
